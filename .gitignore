@@ -1,0 +1,9 @@
+.venv
+*.ams
+*.mdat
+*.csv
+*.xlsx
+*.svg
+*.pdf
+*.afdesign*
+*.bak.py

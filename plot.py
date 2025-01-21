@@ -258,24 +258,21 @@ def create_radiation_pattern(
     ax.set_rticks(np.arange(r_min, r_max + 1, 10))
     ax.set_rlabel_position(r_label_position)
     # Need explanation
-    ax.tick_params(pad=5)
+    ax.tick_params(pad=0)
     ax.set_thetagrids(
         np.arange(0, 360, 30),
-        labels=[
-            "= 0",
-            "30",
-            "60°",
-            "90°",
-            "120°",
-            "150°",
-            "180°",
-            "150°",
-            "120°",
-            "90°",
-            "60°",
-            "30°",
-        ],
+        labels=[  # pyright:ignore[reportOperatorIssue, reportArgumentType]
+            r"$\it\theta$ = 0$\degree$",
+        ]
+        + np.char.add(np.arange(30, 180 + 1, 30).astype(str), r"$\degree$").tolist()
+        + np.char.add(np.arange(150, 30 - 1, -30).astype(str), r"$\degree$").tolist(),
     )
+
+    for x, label in zip(ax.get_xticks(), ax.get_xticklabels()):
+        if np.sin(x) > 0.1:
+            label.set_horizontalalignment("left")
+        if np.sin(x) < -0.1:
+            label.set_horizontalalignment("right")
 
     if file_name is not None:
         fig.savefig(file_name, bbox_inches="tight")
